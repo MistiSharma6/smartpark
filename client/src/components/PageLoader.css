@@ -1,0 +1,49 @@
+.page-loader-container {
+  /* Remove fixed, inset, and z-index */
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  
+  /* Make it fill the main content area instead of the screen */
+  width: 100%;
+  height: 100%; 
+  min-height: 60vh; /* Adds a fallback height just in case the parent is empty */
+  
+  background: #f5f7fa;
+}
+
+.page-loader-wrapper {
+  position: relative;
+  width: 160px;
+  height: 160px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.page-loader-ring {
+  position: absolute;
+  inset: 0;
+  border-radius: 50%;
+  border: 2px solid rgba(15, 185, 177, 0.15);
+  border-top-color: #0fb9b1;
+  animation: page-loader-spin 1.2s cubic-bezier(0.5, 0, 0.5, 1) infinite;
+}
+
+.page-loader-logo {
+  /* Increased from 80px to 120px to make it prominent inside the ring */
+  width: 120px; 
+  height: auto;
+  object-fit: contain;
+  animation: page-loader-pulse 2s ease-in-out infinite;
+}
+
+@keyframes page-loader-spin {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
+
+@keyframes page-loader-pulse {
+  0%, 100% { opacity: 0.7; transform: scale(0.95); }
+  50% { opacity: 1; transform: scale(1); }
+}

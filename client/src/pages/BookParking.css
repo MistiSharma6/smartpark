@@ -1,0 +1,161 @@
+.book-parking { max-width: 900px; }
+
+/* ── Progress ────────────────────────────────── */
+.booking-progress {
+  display: flex; justify-content: space-between; align-items: center;
+  padding: 18px 24px !important; margin-bottom: 24px; position: relative;
+}
+.progress-step {
+  display: flex; flex-direction: column; align-items: center; gap: 6px;
+  z-index: 1; flex: 1;
+}
+.step-circle {
+  width: 36px; height: 36px; border-radius: 50%;
+  display: flex; align-items: center; justify-content: center;
+  font-weight: 700; font-size: 0.85rem;
+  background: var(--bg-glass); border: 2px solid var(--border);
+  color: var(--text-muted); transition: all var(--transition-normal);
+}
+.progress-step.active .step-circle {
+  border-color: var(--accent-blue); color: var(--accent-blue);
+  background: rgba(59, 130, 246, 0.1);
+}
+.progress-step.current .step-circle {
+  background: var(--gradient-brand); color: white;
+  border-color: transparent;
+  box-shadow: 0 0 12px var(--accent-blue-glow);
+}
+.step-label {
+  font-size: 0.7rem; color: var(--text-muted);
+  font-weight: 500; text-transform: uppercase; letter-spacing: 0.3px;
+}
+.progress-step.active .step-label { color: var(--text-secondary); }
+.progress-step.current .step-label { color: var(--text-primary); }
+
+/* ── Step Content ────────────────────────────── */
+.booking-step h2 { margin-bottom: 4px; }
+.step-nav {
+  display: flex; justify-content: space-between; align-items: center;
+  margin-top: 28px;
+}
+
+/* ── Lot Grid ────────────────────────────────── */
+.booking-lots-grid {
+  display: grid; grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+  gap: 12px;
+}
+.booking-lot-card {
+  cursor: pointer; position: relative; padding: 16px !important;
+  border: 2px solid var(--border) !important;
+  transition: all var(--transition-normal);
+}
+.booking-lot-card:hover { border-color: var(--border-hover) !important; }
+.booking-lot-card.selected {
+  border-color: var(--accent-blue) !important;
+  box-shadow: 0 0 16px var(--accent-blue-glow);
+}
+.booking-lot-header {
+  display: flex; align-items: center; gap: 8px; margin-bottom: 6px;
+}
+.booking-lot-header h3 { font-size: 0.9rem; }
+.booking-lot-info {
+  display: flex; align-items: center; gap: 8px; margin-top: 8px;
+}
+.lot-selected-check {
+  position: absolute; top: 10px; right: 10px; color: var(--accent-blue);
+}
+
+/* ── Slot Type Grid ──────────────────────────── */
+.slot-type-grid {
+  display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+  gap: 14px;
+}
+.slot-type-card {
+  cursor: pointer; text-align: center; padding: 20px !important;
+  border: 2px solid var(--border) !important;
+  transition: all var(--transition-normal); position: relative;
+}
+.slot-type-card:hover { border-color: var(--type-color, var(--border-hover)) !important; }
+.slot-type-card.selected {
+  border-color: var(--type-color) !important;
+  box-shadow: 0 0 16px color-mix(in srgb, var(--type-color) 25%, transparent);
+  background: color-mix(in srgb, var(--type-color) 5%, var(--bg-card));
+}
+.slot-type-card h3 { font-size: 0.9rem; margin: 10px 0 4px; }
+.slot-type-card p { font-size: 0.75rem; color: var(--text-muted); }
+.type-check {
+  position: absolute; top: 8px; right: 8px;
+  color: var(--type-color, var(--accent-blue));
+}
+
+/* ── Vehicle Select ──────────────────────────── */
+.vehicle-select-grid {
+  display: flex; gap: 10px; flex-wrap: wrap;
+}
+.vehicle-opt {
+  display: flex; align-items: center; gap: 8px;
+  padding: 10px 16px !important; cursor: pointer;
+  border: 2px solid var(--border) !important;
+  transition: all var(--transition-normal);
+}
+.vehicle-opt:hover { border-color: var(--border-hover) !important; }
+.vehicle-opt.selected {
+  border-color: var(--accent-blue) !important;
+  background: rgba(59, 130, 246, 0.05);
+}
+
+/* ── Preferences ─────────────────────────────── */
+.prefs-grid {
+  display: grid; grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+  gap: 12px;
+}
+.pref-card {
+  cursor: pointer; display: flex; align-items: center; gap: 10px;
+  padding: 16px !important; transition: all var(--transition-normal);
+  border: 2px solid var(--border) !important; position: relative;
+}
+.pref-card:hover { border-color: var(--border-hover) !important; }
+.pref-card.selected {
+  border-color: var(--accent-emerald) !important;
+  background: rgba(16, 185, 129, 0.06);
+}
+.pref-check {
+  position: absolute; top: 6px; right: 6px; color: var(--accent-emerald);
+}
+
+/* ── Confirm ─────────────────────────────────── */
+.confirm-summary { padding: 20px !important; }
+.confirm-row {
+  display: flex; justify-content: space-between; align-items: center;
+  padding: 10px 0; border-bottom: 1px solid var(--border);
+}
+.confirm-row:last-child { border-bottom: none; }
+.confirm-row span {
+  display: flex; align-items: center; gap: 6px;
+  font-size: 0.85rem; color: var(--text-secondary);
+}
+
+/* ── Success ─────────────────────────────────── */
+.booking-success {
+  text-align: center; padding: 40px 24px !important;
+}
+.success-icon {
+  font-size: 3rem; margin-bottom: 12px;
+}
+.booking-success h2 { color: var(--accent-emerald); margin-bottom: 4px; }
+.booking-success > p { color: var(--text-secondary); margin-bottom: 24px; }
+
+.success-details {
+  max-width: 400px; margin: 0 auto 24px; text-align: left;
+  background: var(--bg-glass); border: 1px solid var(--border);
+  border-radius: var(--radius-md); padding: 16px;
+}
+.success-row {
+  display: flex; justify-content: space-between;
+  padding: 8px 0; border-bottom: 1px solid var(--border);
+  font-size: 0.85rem;
+}
+.success-row:last-child { border-bottom: none; }
+.success-row span { color: var(--text-secondary); }
+
+.success-actions { display: flex; gap: 10px; justify-content: center; }

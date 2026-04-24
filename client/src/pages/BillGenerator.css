@@ -1,0 +1,207 @@
+.bill-generator { max-width: 1200px; }
+
+/* Filters */
+.bg-filters {
+  display: flex; align-items: center; gap: 12px; flex-wrap: wrap;
+  padding: 12px 16px !important; margin-bottom: 16px;
+}
+.bg-search { display: flex; align-items: center; gap: 8px; flex: 1; min-width: 250px; color: var(--text-muted); }
+.bg-search-input { flex: 1; border: none; background: transparent; color: var(--text-primary); font-size: 0.9rem; padding: 6px 0; }
+.bg-search-input:focus { outline: none; }
+.bg-lot-filter { display: flex; align-items: center; gap: 6px; position: relative; color: var(--text-muted); }
+.bg-lot-select { padding: 8px 28px 8px 10px; font-size: 0.82rem; appearance: none; min-width: 140px; border: 1px solid var(--border); border-radius: var(--radius-sm); background: var(--bg-primary); color: var(--text-primary); }
+.bg-chevron { position: absolute; right: 8px; pointer-events: none; }
+
+/* ── FULL SCREEN OVERLAY ── */
+.bg-bill-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  z-index: 99999;
+  background: rgba(0, 0, 0, 0.6);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 20px;
+  overflow-y: auto;
+}
+
+.bg-bill-modal {
+  position: relative;
+  max-width: 500px;
+  width: 100%;
+  background: var(--bg-secondary);
+  border: 1px solid var(--border);
+  border-radius: 16px;
+  box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5);
+  animation: modalSlideUp 0.3s ease-out;
+}
+
+@keyframes modalSlideUp {
+  from { transform: translateY(20px); opacity: 0; }
+  to { transform: translateY(0); opacity: 1; }
+}
+
+.bg-close-btn {
+  position: absolute; top: 16px; right: 16px; z-index: 10;
+  background: var(--bg-primary); border: 1px solid var(--border);
+  color: var(--text-muted); border-radius: 8px; padding: 6px; cursor: pointer;
+}
+
+.bg-screen-receipt { padding: 32px; }
+.bg-screen-header { display: flex; justify-content: space-between; align-items: flex-start; }
+.bg-screen-logo { height: 48px; }
+.bg-screen-title-wrap h3 { font-size: 0.85rem; font-weight: 700; color: var(--text-secondary); margin: 0; }
+.bg-screen-title-wrap p { font-family: monospace; color: var(--accent-blue); margin: 4px 0 0; }
+
+.bg-screen-divider {
+  height: 1px; margin: 20px 0;
+  background: repeating-linear-gradient(90deg, var(--border) 0, var(--border) 6px, transparent 6px, transparent 12px);
+}
+
+.bg-screen-row { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; margin-bottom: 16px; }
+.bg-screen-field label { display: flex; align-items: center; gap: 4px; font-size: 0.72rem; color: var(--text-muted); text-transform: uppercase; }
+.bg-screen-field span { font-size: 0.95rem; font-weight: 500; }
+
+.bg-screen-total {
+  display: flex; justify-content: space-between; align-items: center;
+  padding: 16px 0; border-top: 2px solid var(--accent-blue); border-bottom: 2px solid var(--accent-blue);
+}
+.bg-total-amount { font-size: 1.5rem; font-weight: 800; color: var(--accent-blue); }
+.bg-screen-actions { margin-top: 24px; }
+.bg-btn-full { width: 100%; justify-content: center; padding: 12px; }
+
+/* ── PRINT LOGIC ── */
+.print-only-receipt { display: none; }
+
+@media print {
+  /* Set Landscape for wide layout matching image */
+  @page { size: landscape; margin: 10mm; }
+  
+  body * { visibility: hidden; }
+  .no-print { display: none !important; }
+  
+  /* CRITICAL FIX: Reset the overlay during print so it stops clipping/zooming the page */
+  .bg-bill-overlay {
+    position: absolute !important;
+    top: 0 !important; left: 0 !important;
+    width: 100% !important; height: auto !important;
+    display: block !important;
+    background: transparent !important;
+    backdrop-filter: none !important; -webkit-backdrop-filter: none !important;
+    padding: 0 !important; margin: 0 !important;
+  }
+
+  .print-only-receipt, .print-only-receipt * { visibility: visible; }
+  
+  .print-only-receipt {
+    display: block !important;
+    position: relative !important;
+    width: 100% !important;
+    max-width: 1050px !important;
+    margin: 0 auto !important;
+    padding: 40px !important;
+    
+    /* Forces browser to print background colors and styles */
+    -webkit-print-color-adjust: exact !important;
+    print-color-adjust: exact !important;
+    background-color: #fafaf9 !important; /* Soft off-white like the image */
+    font-family: system-ui, -apple-system, sans-serif !important;
+  }
+
+  /* Header & Logo */
+  .pr-header { text-align: center !important; margin-bottom: 32px !important; }
+  .pr-logo { height: 60px !important; object-fit: contain !important; display: block !important; margin: 0 auto !important; }
+
+  /* Top 4-Column Bar */
+  .pr-top-bar {
+    display: grid !important;
+    grid-template-columns: repeat(4, 1fr) !important;
+    background: #ffffff !important;
+    border: 1px solid #e5e7eb !important;
+    border-radius: 8px !important;
+    margin-bottom: 24px !important;
+  }
+  .pr-info-box {
+    padding: 16px 20px !important;
+    border-right: 1px solid #e5e7eb !important;
+    display: flex !important; flex-direction: column !important; gap: 4px !important;
+  }
+  .pr-info-box:last-child { border-right: none !important; }
+  
+  .pr-label {
+    font-size: 0.75rem !important; font-weight: 700 !important;
+    color: #6b7280 !important; text-transform: uppercase !important;
+    display: flex !important; align-items: center !important; gap: 4px !important;
+  }
+  .pr-val { font-size: 1.1rem !important; font-weight: 600 !important; color: #111827 !important; }
+
+  /* 2-Column Main Cards */
+  .pr-cards-container {
+    display: grid !important;
+    grid-template-columns: 1fr 1fr !important;
+    gap: 24px !important;
+    margin-bottom: 24px !important;
+  }
+  
+  .pr-card {
+    background: #ffffff !important;
+    border: 1px solid #e5e7eb !important;
+    border-radius: 8px !important;
+    padding: 24px !important;
+  }
+  .pr-card-title {
+    color: #0fb9b1 !important; /* Teal Color */
+    font-size: 1.05rem !important; font-weight: 700 !important;
+    margin: 0 0 20px 0 !important; text-transform: uppercase !important;
+    letter-spacing: 0.5px !important;
+  }
+
+  /* Left Card Content */
+  .pr-card-grid {
+    display: grid !important;
+    grid-template-columns: 1fr 1fr !important;
+    gap: 24px !important;
+  }
+  .pr-field { display: flex !important; flex-direction: column !important; gap: 6px !important; }
+  .pr-val-teal { font-size: 1.1rem !important; font-weight: 700 !important; color: #0fb9b1 !important; }
+
+  /* Right Card Content */
+  .pr-billing-row {
+    display: flex !important; justify-content: space-between !important; align-items: center !important;
+    padding: 12px 0 !important; border-bottom: 1px solid #f3f4f6 !important;
+  }
+  .pr-no-border { border-bottom: none !important; }
+  .pr-b-label { font-size: 1rem !important; color: #4b5563 !important; }
+  .pr-b-val { font-size: 1rem !important; font-weight: 600 !important; color: #111827 !important; }
+  
+  .pr-billing-total {
+    display: flex !important; justify-content: space-between !important; align-items: center !important;
+    padding: 20px 0 !important; border-bottom: 2px solid #0fb9b1 !important;
+  }
+  .pr-total-teal { font-size: 2rem !important; font-weight: 800 !important; color: #0fb9b1 !important; }
+
+  /* Status Badge */
+  .pr-status {
+    padding: 6px 16px !important; border-radius: 20px !important;
+    font-size: 0.8rem !important; font-weight: 700 !important; border: 1px solid currentColor !important;
+  }
+  .pr-paid { color: #0fb9b1 !important; background: #e6f8f7 !important; border-color: #0fb9b1 !important; }
+  .pr-pending { color: #d97706 !important; background: #fef3c7 !important; border-color: #f59e0b !important; }
+
+  /* Footer */
+  .pr-footer-top {
+    display: flex !important; justify-content: space-between !important;
+    margin-bottom: 32px !important; padding: 0 8px !important;
+  }
+  .pr-f-left, .pr-f-right { display: flex !important; flex-direction: column !important; gap: 6px !important; }
+  .pr-f-right { text-align: right !important; align-items: flex-end !important; }
+  .pr-footer-top .pr-val { font-family: monospace !important; font-size: 1rem !important; font-weight: 700 !important; }
+
+  .pr-footer-bottom { text-align: center !important; font-size: 0.95rem !important; font-style: italic !important; color: #6b7280 !important; }
+  .pr-brand { color: #0fb9b1 !important; font-weight: 700 !important; font-style: italic !important;}
+}

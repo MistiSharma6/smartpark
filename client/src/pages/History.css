@@ -1,0 +1,5 @@
+.history-page { max-width: 1100px; }
+.pagination {
+  display: flex; align-items: center; justify-content: center; gap: 16px;
+  margin-top: 20px; font-size: 0.9rem; color: var(--text-secondary);
+}

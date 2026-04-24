@@ -1,0 +1,301 @@
+.path-visualizer { max-width: 1200px; }
+
+/* ── Vehicle Selector ──────────── */
+.pv-vehicle-selector {
+  display: flex; align-items: center; gap: 10px;
+  padding: 12px 16px !important; margin-bottom: 12px; flex-wrap: wrap;
+}
+.pv-vs-label {
+  font-size: 0.85rem; font-weight: 600; color: var(--text-secondary);
+}
+.pv-vs-dropdown {
+  padding: 8px 14px; font-size: 0.85rem;
+  background: var(--bg-glass); border: 1px solid var(--border);
+  color: var(--text-primary); border-radius: var(--radius-sm);
+  min-width: 200px;
+}
+.pv-vs-dropdown:focus {
+  border-color: var(--accent-blue);
+  box-shadow: 0 0 0 3px var(--accent-blue-glow);
+  outline: none;
+}
+.pv-my-slot-btn {
+  margin-left: auto;
+}
+
+.pv-controls {
+  display: flex; align-items: center; gap: 12px;
+  padding: 14px 16px !important; margin-bottom: 12px; flex-wrap: wrap;
+}
+.pv-stats {
+  display: flex; gap: 14px; margin-left: auto;
+  font-size: 0.82rem; color: var(--text-secondary);
+}
+.pv-stats span { display: flex; align-items: center; gap: 4px; }
+.pv-stats strong { color: var(--text-primary); }
+
+.speed-controls {
+  display: flex; align-items: center; gap: 4px;
+  color: var(--text-muted); font-size: 0.8rem;
+}
+.speed-btn {
+  padding: 3px 8px; font-size: 0.75rem; font-weight: 600;
+  border-radius: var(--radius-sm); cursor: pointer;
+  background: var(--bg-glass); border: 1px solid var(--border);
+  color: var(--text-muted); transition: all var(--transition-fast);
+}
+.speed-btn:hover { border-color: var(--accent-purple); color: var(--accent-purple); }
+.speed-btn.active {
+  background: rgba(139,92,246,0.15); border-color: var(--accent-purple);
+  color: var(--accent-purple); box-shadow: 0 0 6px rgba(139,92,246,0.2);
+}
+
+/* ── Floor Selector ─────────────── */
+.pv-floor-selector {
+  display: flex; align-items: center; gap: 8px;
+  padding: 10px 16px !important; margin-bottom: 12px;
+  font-size: 0.85rem; color: var(--text-secondary);
+}
+.floor-btn {
+  padding: 4px 12px; font-size: 0.78rem; font-weight: 700;
+  border-radius: var(--radius-sm); cursor: pointer;
+  background: var(--bg-glass); border: 1px solid var(--border);
+  color: var(--text-muted); transition: all var(--transition-fast);
+}
+.floor-btn:hover { border-color: var(--accent-blue); color: var(--accent-blue); }
+.floor-btn.active {
+  background: var(--gradient-brand); color: white;
+  border-color: transparent; box-shadow: 0 0 10px var(--accent-blue-glow);
+}
+
+.pv-legend {
+  display: flex; flex-wrap: wrap; gap: 12px;
+  margin-bottom: 8px; font-size: 0.78rem; color: var(--text-secondary);
+}
+.pv-type-legend {
+  margin-bottom: 12px;
+}
+.pv-type-legend-label {
+  font-weight: 700; font-size: 0.7rem; text-transform: uppercase;
+  letter-spacing: 0.8px; color: var(--text-muted);
+}
+.legend-item { display: flex; align-items: center; gap: 5px; }
+.pv-cell-mini { width: 13px; height: 13px; border-radius: 3px; display: inline-block; }
+.pv-entry-mini { background: #10b981; }
+.pv-exit-mini {
+  background: repeating-linear-gradient(-45deg, #f43f5e 0px, #f43f5e 2px, #be123c 2px, #be123c 4px);
+}
+.pv-slot-mini { background: #3b82f6; }
+/* Ramp = Hot Pink (distinct from purple user slot) */
+.pv-ramp-mini { background: linear-gradient(135deg, #ec4899, #f472b6); }
+/* Stairs = Deep Amber */
+.pv-stairs-mini { background: #d97706; }
+.pv-wall-mini { background: #334155; }
+.pv-visited-mini { background: #06b6d4; }
+.pv-path-mini { background: #fbbf24; }
+.pv-target-mini {
+  background: transparent;
+  outline: 2px solid #fbbf24;
+  box-shadow: 0 0 5px rgba(251,191,36,0.5);
+}
+.pv-booked-mini { background: #f59e0b; }
+.pv-occupied-mini { background: #ef4444; }
+/* User's Slot = Vibrant Purple */
+.pv-mine-mini {
+  background: #8b5cf6;
+  box-shadow: 0 0 6px rgba(139,92,246,0.5);
+}
+/* Slot type swatches */
+.pv-ev-type-mini {
+  background: rgba(20,184,166,0.25);
+  border: 2px solid #14b8a6;
+}
+.pv-handicap-type-mini {
+  background: rgba(6,182,212,0.25);
+  border: 2px solid #06b6d4;
+}
+.pv-premium-type-mini {
+  background: rgba(234,179,8,0.25);
+  border: 2px solid #eab308;
+}
+
+.pv-help {
+  display: flex; align-items: center; gap: 6px;
+  font-size: 0.8rem; color: var(--text-muted); margin-bottom: 12px;
+}
+
+.pv-grid-wrapper { padding: 14px !important; overflow: auto; margin-bottom: 16px; }
+
+/* ── Grid Numbers ──────────────── */
+.pv-col-numbers {
+  display: grid; gap: 1px; width: fit-content; margin: 0 auto 0;
+  user-select: none;
+}
+.pv-grid-number {
+  display: flex; align-items: center; justify-content: center;
+  font-size: 0.6rem; font-weight: 600; color: var(--text-muted);
+  font-family: 'Inter', monospace;
+}
+.pv-grid-number.corner { width: 32px; }
+.pv-grid-number.col-num { width: 34px; height: 18px; }
+.pv-grid-number.row-num { width: 32px; height: 34px; }
+.pv-grid-body { width: fit-content; margin: 0 auto; }
+.pv-grid-row { display: grid; gap: 1px; }
+
+/* ── Cell Styles ─────────────────── */
+.pv-cell {
+  width: 34px; height: 34px; border-radius: 4px; cursor: pointer;
+  background: rgba(0,0,0,0.02);
+  border: 1px solid rgba(0,0,0,0.06);
+  transition: background-color 0.1s;
+  display: flex; align-items: center; justify-content: center;
+  flex-direction: column;
+  position: relative;
+}
+.pv-cell:hover { outline: 2px solid rgba(0,0,0,0.15); z-index: 1; }
+
+/* Cell label (slot number, E/X/R/S) */
+.pv-cell-label {
+  font-family: 'Outfit', sans-serif;
+  font-size: 0.6rem; font-weight: 700;
+  line-height: 1; color: rgba(255,255,255,0.95);
+  text-shadow: 0 1px 3px rgba(0,0,0,0.6);
+  z-index: 1;
+}
+
+.pv-entry {
+  background: #10b981 !important;
+  border-color: rgba(16,185,129,0.5);
+  box-shadow: 0 0 8px rgba(16,185,129,0.4);
+}
+/* Exit = Rose Pink (distinct from occupied red) */
+/* Exit = Rose with diagonal stripes (visually distinct from occupied red and target) */
+.pv-exit {
+  background: repeating-linear-gradient(
+    -45deg,
+    #f43f5e 0px, #f43f5e 3px,
+    #be123c 3px, #be123c 6px
+  ) !important;
+  border: 2px solid #f43f5e;
+  box-shadow: 0 0 8px rgba(244,63,94,0.4);
+}
+.pv-slot {
+  background: #3b82f6 !important;
+  border-color: rgba(59,130,246,0.5);
+  box-shadow: 0 0 4px rgba(59,130,246,0.3);
+}
+/* Reserved/booked slot — orange */
+.pv-slot-booked {
+  background: #f59e0b !important;
+  border-color: rgba(245,158,11,0.5);
+  box-shadow: 0 0 6px rgba(245,158,11,0.35);
+  cursor: not-allowed;
+}
+/* Occupied slot — red */
+.pv-slot-occupied {
+  background: #ef4444 !important;
+  border-color: rgba(239,68,68,0.5);
+  box-shadow: 0 0 6px rgba(239,68,68,0.35);
+  cursor: not-allowed;
+}
+/* User's Slot — Vibrant Purple with glow */
+.pv-slot-mine {
+  background: #8b5cf6 !important;
+  border-color: rgba(139,92,246,0.7);
+  box-shadow: 0 0 12px rgba(139,92,246,0.5);
+  animation: pvMinePulse 2s ease-in-out infinite;
+  cursor: pointer;
+}
+@keyframes pvMinePulse {
+  0%, 100% { box-shadow: 0 0 8px rgba(139,92,246,0.35); }
+  50% { box-shadow: 0 0 20px rgba(139,92,246,0.7); }
+}
+.pv-mine-badge {
+  position: absolute; top: -2px; right: -1px;
+  font-size: 8px; color: #fbbf24;
+  filter: drop-shadow(0 0 2px rgba(251,191,36,0.8));
+}
+
+/* ── Slot Type Overlays ──────────── */
+.pv-type-ev {
+  outline: 2px solid #14b8a6;
+  outline-offset: -1px;
+  color: #14b8a6;
+}
+.pv-type-handicap {
+  outline: 2px solid #06b6d4;
+  outline-offset: -1px;
+  color: #06b6d4;
+}
+.pv-type-premium {
+  outline: 2px solid #eab308;
+  outline-offset: -1px;
+  color: #eab308;
+}
+
+/* Ramp = Hot Pink gradient (distinct from purple user slot) */
+.pv-ramp {
+  background: linear-gradient(135deg, #ec4899, #f472b6) !important;
+  border-color: rgba(236,72,153,0.5);
+  box-shadow: 0 0 6px rgba(236,72,153,0.3);
+}
+/* Stairs = Deep Amber */
+.pv-stairs {
+  background: #d97706 !important;
+  border-color: rgba(217,119,6,0.5);
+  box-shadow: 0 0 6px rgba(217,119,6,0.3);
+}
+.pv-wall {
+  background: #334155 !important;
+  border-color: rgba(0,0,0,0.08);
+}
+/* Target = Gold/amber ring with crosshair animation (distinct from red exit) */
+.pv-target {
+  outline: 3px solid #fbbf24 !important;
+  outline-offset: -1px;
+  box-shadow: 0 0 14px rgba(251,191,36,0.6), inset 0 0 8px rgba(251,191,36,0.3) !important;
+  animation: targetPulse 1.5s ease-in-out infinite;
+}
+.pv-target::after {
+  content: '✚';
+  position: absolute;
+  font-size: 12px;
+  color: #fbbf24;
+  filter: drop-shadow(0 0 3px rgba(251,191,36,0.8));
+  z-index: 2;
+}
+@keyframes targetPulse {
+  0%, 100% { box-shadow: 0 0 10px rgba(251,191,36,0.4), inset 0 0 6px rgba(251,191,36,0.2); }
+  50% { box-shadow: 0 0 20px rgba(251,191,36,0.7), inset 0 0 10px rgba(251,191,36,0.4); }
+}
+
+/* ── Animated Visited ─────────────── */
+.pv-visited { animation: visitedAnim 1.2s ease-out forwards; }
+@keyframes visitedAnim {
+  0% { transform: scale(0.3); background-color: rgba(0,0,66,0.8); border-radius: 50%; }
+  50% { background-color: rgba(17,104,217,0.7); }
+  75% { transform: scale(1.12); background-color: rgba(0,217,159,0.7); }
+  100% { transform: scale(1); background-color: rgba(6,182,212,0.6); border-radius: 3px; }
+}
+
+/* ── Animated Shortest Path ────────── */
+.pv-shortest-path { animation: pathAnim 1.2s ease-out forwards; }
+@keyframes pathAnim {
+  0% { transform: scale(0.6); background-color: #fbbf24; }
+  50% { transform: scale(1.25); background-color: #fbbf24; box-shadow: 0 0 14px rgba(251,191,36,0.7); }
+  100% { transform: scale(1); background-color: #fbbf24; box-shadow: 0 0 6px rgba(251,191,36,0.4); }
+}
+
+.pv-result { text-align: center; padding: 24px !important; }
+.pv-result h3 { font-size: 1.3rem; margin-bottom: 8px; }
+.pv-result p { color: var(--text-secondary); font-size: 0.95rem; }
+
+/* ── No Target Warning ─────────── */
+.pv-no-target {
+  display: flex; align-items: center; gap: 10px;
+  padding: 10px 16px !important; margin-bottom: 12px;
+  font-size: 0.85rem; color: var(--accent-amber);
+  border-color: rgba(245,158,11,0.3) !important;
+  background: rgba(245,158,11,0.06) !important;
+}
+

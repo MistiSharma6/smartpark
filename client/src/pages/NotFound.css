@@ -1,0 +1,81 @@
+.not-found-container {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 80vh; /* Adjusts well whether inside a sidebar layout or full screen */
+  width: 100%;
+  padding: 24px;
+}
+
+.not-found-content {
+  max-width: 480px;
+  width: 100%;
+  text-align: center;
+  padding: 48px 32px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+/* Subtle floating animation for the icon */
+.not-found-icon-wrapper {
+  background: rgba(15, 185, 177, 0.1); /* Light wash of your teal accent */
+  padding: 24px;
+  border-radius: 50%;
+  margin-bottom: 24px;
+  animation: float-icon 3s ease-in-out infinite;
+}
+
+.not-found-icon {
+  color: #0fb9b1; /* SmartPark teal accent */
+}
+
+.not-found-title {
+  font-size: 5.5rem;
+  font-weight: 900;
+  margin: 0;
+  line-height: 1;
+  /* Gradient text matching the SmartPark brand */
+  background: linear-gradient(135deg, #0fb9b1, #3b82f6);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+.not-found-subtitle {
+  font-size: 1.5rem;
+  color: var(--text-primary, #111827);
+  margin: 12px 0 16px;
+  font-weight: 700;
+}
+
+.not-found-text {
+  color: var(--text-muted, #6b7280);
+  font-size: 0.95rem;
+  line-height: 1.6;
+  margin-bottom: 32px;
+}
+
+.not-found-actions {
+  display: flex;
+  gap: 16px;
+  justify-content: center;
+  width: 100%;
+}
+
+@keyframes float-icon {
+  0% { transform: translateY(0px); }
+  50% { transform: translateY(-10px); }
+  100% { transform: translateY(0px); }
+}
+
+/* Responsive adjustments for smaller screens */
+@media (max-width: 480px) {
+  .not-found-actions {
+    flex-direction: column;
+  }
+  .not-found-actions button {
+    width: 100%;
+    justify-content: center;
+  }
+}

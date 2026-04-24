@@ -1,0 +1,132 @@
+.my-booking-page { max-width: 900px; }
+
+/* ── Active Booking Card ─────────────────────── */
+.active-booking-card { padding: 28px !important; }
+
+.booking-status-row {
+  display: flex; align-items: center; justify-content: space-between;
+  margin-bottom: 24px;
+}
+.booking-status-badge {
+  display: flex; align-items: center; gap: 8px;
+  padding: 8px 16px; border-radius: 20px;
+  font-weight: 600; font-size: 0.85rem;
+}
+.booking-status-badge.confirmed {
+  background: rgba(16, 185, 129, 0.12);
+  color: var(--accent-emerald);
+  border: 1px solid rgba(16, 185, 129, 0.3);
+}
+
+.booking-details-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: 16px; margin-bottom: 20px;
+}
+.booking-detail {
+  display: flex; align-items: flex-start; gap: 10px;
+  padding: 12px; border-radius: var(--radius-sm);
+  background: var(--bg-glass); border: 1px solid var(--border);
+}
+.detail-icon {
+  width: 32px; height: 32px; border-radius: 8px;
+  background: rgba(59, 130, 246, 0.1);
+  display: flex; align-items: center; justify-content: center;
+  flex-shrink: 0; color: var(--accent-blue);
+}
+.detail-label {
+  display: block; font-size: 0.72rem; color: var(--text-muted);
+  text-transform: uppercase; letter-spacing: 0.5px; font-weight: 600;
+}
+.detail-value {
+  display: block; font-size: 0.9rem; font-weight: 600; margin-top: 2px;
+}
+.detail-sub {
+  display: block; font-size: 0.75rem; color: var(--text-muted); margin-top: 1px;
+}
+
+.booking-prefs {
+  display: flex; align-items: center; gap: 6px; flex-wrap: wrap;
+  margin-bottom: 20px;
+}
+.prefs-label { font-size: 0.8rem; font-weight: 600; color: var(--text-secondary); }
+
+/* ── Path Preview ────────────────────────────── */
+.path-preview {
+  background: var(--bg-glass); border: 1px solid var(--border);
+  border-radius: var(--radius-md); padding: 16px; margin-bottom: 20px;
+}
+.path-preview h3 {
+  display: flex; align-items: center; gap: 8px;
+  font-size: 0.9rem; margin-bottom: 12px;
+}
+
+.path-steps {
+  display: flex; align-items: center; gap: 4px;
+  overflow-x: auto; padding: 8px 0; flex-wrap: wrap;
+}
+.path-step {
+  display: flex; align-items: center; gap: 4px;
+}
+.path-node {
+  width: 28px; height: 28px; border-radius: 50%;
+  background: var(--bg-card); border: 1px solid var(--border);
+  display: flex; align-items: center; justify-content: center;
+  font-size: 0.7rem; flex-shrink: 0;
+}
+.path-node.start { border-color: #10b981; }
+.path-node.end { border-color: #f59e0b; background: rgba(245, 158, 11, 0.1); }
+.path-label { font-size: 0.7rem; color: var(--text-secondary); white-space: nowrap; }
+.path-arrow { color: var(--text-muted); }
+
+.path-distance {
+  font-size: 0.82rem; color: var(--text-secondary); margin-top: 10px;
+}
+
+/* ── Floor Guide ─────────────────────────────── */
+.floor-guide {
+  margin-bottom: 20px; padding: 16px !important;
+}
+.floor-guide h3 {
+  display: flex; align-items: center; gap: 8px;
+  font-size: 0.9rem; margin-bottom: 12px;
+}
+.floor-steps {
+  display: flex; align-items: center; gap: 0; flex-wrap: wrap;
+}
+.floor-step {
+  display: flex; align-items: center; gap: 0;
+}
+.floor-badge {
+  width: 40px; height: 40px; border-radius: var(--radius-sm);
+  display: flex; align-items: center; justify-content: center;
+  font-weight: 700; font-size: 0.85rem;
+}
+.floor-badge.transit {
+  background: var(--bg-glass); border: 1px solid var(--border);
+  color: var(--text-secondary);
+}
+.floor-badge.current {
+  background: linear-gradient(135deg, #3b82f6, #8b5cf6);
+  color: white; box-shadow: 0 0 12px rgba(59, 130, 246, 0.3);
+}
+.ramp-indicator {
+  display: flex; align-items: center; gap: 4px;
+  padding: 0 8px; font-size: 0.7rem; color: var(--text-muted);
+}
+
+/* ── Actions ─────────────────────────────────── */
+.booking-actions {
+  display: flex; gap: 10px; flex-wrap: wrap;
+}
+
+/* ── No Booking ──────────────────────────────── */
+.no-booking-card {
+  text-align: center; padding: 60px 24px !important;
+}
+.no-booking-card h2 { margin: 16px 0 8px; font-size: 1.3rem; }
+.no-booking-card p { color: var(--text-secondary); margin-bottom: 24px; }
+
+/* ── Past Bookings ───────────────────────────── */
+.past-bookings { margin-top: 32px; }
+.past-bookings h2 { margin-bottom: 16px; }

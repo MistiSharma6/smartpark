@@ -1,0 +1,196 @@
+generator client {
+  provider = "prisma-client"
+  output   = "../src/generated/prisma"
+}
+
+datasource db {
+  provider = "postgresql"
+}
+
+// ─── Users & Auth ───────────────────────────────────────────
+
+model User {
+  id               String            @id @default(uuid())
+  name             String
+  email            String            @unique
+  phone            String?
+  role             Role              @default(USER)
+  verified         Boolean           @default(false)
+  vehicles         Vehicle[]
+  bookings         Booking[]
+  passwordHash     String
+  refreshToken     String?
+  createdAt        DateTime          @default(now())
+  updatedAt        DateTime          @updatedAt
+  otpVerifications OTPVerification[]
+}
+
+model OTPVerification {
+  id        String   @id @default(uuid())
+  userId    String
+  type      OTPType
+  otp       String
+  attempts  Int      @default(0)
+  createdAt DateTime @default(now())
+  expiresAt DateTime
+  verified  Boolean  @default(false)
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@index([userId])
+}
+
+// ─── Vehicles ───────────────────────────────────────────────
+
+model Vehicle {
+  id       String           @id @default(uuid())
+  rfidTag  String           @unique
+  plateNo  String           @unique
+  owner    User             @relation(fields: [ownerId], references: [id])
+  ownerId  String
+  sessions ParkingSession[]
+  bookings Booking[]
+}
+
+// ─── Parking Lots & Slots ───────────────────────────────────
+
+model ParkingLot {
+  id          String             @id @default(uuid())
+  name        String
+  address     String?
+  latitude    Float?
+  longitude   Float?
+  floors      Int                @default(1)
+  totalSlots  Int                @default(0)
+  ratePerHour Float              @default(20.0)
+  graphData   Json?
+  entryNodeId String?
+  slots       ParkingSlot[]
+  bookings    Booking[]
+  analytics   ParkingAnalytics[]
+  createdAt   DateTime           @default(now())
+}
+
+model ParkingSlot {
+  id       String     @id @default(uuid())
+  block    String
+  number   Int
+  floor    Int
+  type     SlotType   @default(REGULAR)
+  status   SlotStatus @default(FREE)
+  xCoord   Float?
+  yCoord   Float?
+  nodeId   String?
+  features String[]   @default([])
+
+  lot   ParkingLot @relation(fields: [lotId], references: [id])
+  lotId String
+
+  sessions ParkingSession[]
+  bookings Booking[]
+
+  @@unique([lotId, block, number, floor])
+}
+
+// ─── Parking Sessions ───────────────────────────────────────
+
+model ParkingSession {
+  id            String        @id @default(uuid())
+  vehicle       Vehicle       @relation(fields: [vehicleId], references: [id])
+  vehicleId     String
+  slot          ParkingSlot   @relation(fields: [slotId], references: [id])
+  slotId        String
+  entryTime     DateTime      @default(now())
+  exitTime      DateTime?
+  duration      Int?
+  cost          Float?
+  paymentStatus PaymentStatus @default(PENDING)
+  bookingId     String?
+  booking       Booking?      @relation(fields: [bookingId], references: [id])
+  createdAt     DateTime      @default(now())
+}
+
+// ─── Online Bookings ────────────────────────────────────────
+
+model Booking {
+  id           String        @id @default(uuid())
+  user         User          @relation(fields: [userId], references: [id])
+  userId       String
+  lot          ParkingLot    @relation(fields: [lotId], references: [id])
+  lotId        String
+  slot         ParkingSlot?  @relation(fields: [slotId], references: [id])
+  slotId       String?
+  vehicle      Vehicle?      @relation(fields: [vehicleId], references: [id])
+  vehicleId    String?
+  slotType     SlotType      @default(REGULAR)
+  preferences  String[]      @default([])
+  registered   Boolean       @default(false)
+  confirmed    Boolean       @default(false)
+  confirmedAt  DateTime?
+  status       BookingStatus @default(REGISTERED)
+  bookingTime  DateTime      @default(now())
+  scheduledFor DateTime?
+  expiresAt    DateTime
+  checkedInAt  DateTime?
+  sessions     ParkingSession[]
+  createdAt    DateTime      @default(now())
+
+  @@index([userId])
+  @@index([lotId])
+}
+
+// ─── Analytics ──────────────────────────────────────────────
+
+model ParkingAnalytics {
+  id            String     @id @default(uuid())
+  lot           ParkingLot @relation(fields: [lotId], references: [id])
+  lotId         String
+  timestamp     DateTime   @default(now())
+  occupiedSlots Int
+  totalSlots    Int
+  avgDuration   Float?
+
+  @@index([lotId, timestamp])
+}
+
+// ─── Enums ──────────────────────────────────────────────────
+
+enum OTPType {
+  EMAIL_VERIFICATION
+  PASSWORD_RESET
+}
+
+enum Role {
+  USER
+  ADMIN
+  SECURITY
+}
+
+enum SlotStatus {
+  FREE
+  OCCUPIED
+  RESERVED
+}
+
+enum SlotType {
+  REGULAR
+  EV_CHARGING
+  HANDICAPPED
+  PREMIUM
+}
+
+enum PaymentStatus {
+  PENDING
+  PAID
+  WAIVED
+}
+
+enum BookingStatus {
+  PENDING
+  REGISTERED
+  CONFIRMED
+  CHECKED_IN
+  COMPLETED
+  CANCELLED
+  EXPIRED
+}
