@@ -74,7 +74,7 @@ export default function Login() {
           </p>
 
           <div className="demo-credentials">
-            <p className="demo-title">Demo Credentials</p>
+            <p className="demo-title">Demo Credentials (Not working now)</p>
             <div className="demo-row" onClick={() => { setEmail('admin@smartpark.com'); setPassword('admin123'); }}>
               <span>Admin</span> admin@smartpark.com / admin123
             </div>
