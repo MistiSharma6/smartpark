@@ -1,39 +1,38 @@
 import { prisma } from "../lib/prisma.js";
 import { ApiError } from "./ApiError.js";
-import bcrypt from "bcrypt"
-import { Resend } from "resend";
+import bcrypt from "bcrypt";
 import crypto from "crypto";
+import nodemailer from "nodemailer";
 
-const resend = new Resend(process.env.RESEND_API_KEY);
+const transporter = nodemailer.createTransport({
+    host: process.env.SMTP_HOST,
+    port: Number(process.env.SMTP_PORT),
+    secure: false,
+    auth: {
+        user: process.env.AUTH_EMAIL,
+        pass: process.env.AUTH_PASSWORD,
+    },
+});
 
-export const generateOTP = async ({ id, email, type}: {id: string, email: string, type: "EMAIL_VERIFICATION" | "PASSWORD_RESET"}) => { 
+export const generateOTP = async ({ id, email, type }: { id: string; email: string; type: "EMAIL_VERIFICATION" | "PASSWORD_RESET" }) => {
     try {
         const now = new Date();
 
-        // 1. Check last OTP (cooldown: 60 sec)
         const lastOTP = await prisma.oTPVerification.findFirst({
             where: { userId: id, type: type },
-            orderBy: { createdAt: "desc" }
+            orderBy: { createdAt: "desc" },
         });
 
         if (lastOTP) {
             const diff = now.getTime() - new Date(lastOTP.createdAt).getTime();
-
             if (diff < 60 * 1000) {
                 throw new ApiError(429, "Please wait 60 seconds before requesting another OTP.");
             }
         }
 
         const tenMinutesAgo = new Date(Date.now() - 10 * 60 * 1000);
-
         const otpCount = await prisma.oTPVerification.count({
-            where: {
-                userId: id,
-                type,
-                createdAt: {
-                    gte: tenMinutesAgo
-                }
-            }
+            where: { userId: id, type, createdAt: { gte: tenMinutesAgo } },
         });
 
         if (otpCount >= 5) {
@@ -42,16 +41,12 @@ export const generateOTP = async ({ id, email, type}: {id: string, email: string
 
         const otp = crypto.randomInt(100000, 999999).toString();
 
-        await prisma.oTPVerification.deleteMany({
-            where: {
-                userId: id,
-                type
-            }
-        });
-        const subject=(type==="EMAIL_VERIFICATION")?"Verify your email": "Reset your password";
+        await prisma.oTPVerification.deleteMany({ where: { userId: id, type } });
+
+        const subject = type === "EMAIL_VERIFICATION" ? "Verify your email" : "Reset your password";
         const title = type === "EMAIL_VERIFICATION" ? "Verify your email" : "Reset your password";
 
-        const saltRounds=10;
+        const saltRounds = 10;
         const hashedOTP = await bcrypt.hash(otp, saltRounds);
 
         const otpRecord = await prisma.oTPVerification.create({
@@ -59,14 +54,13 @@ export const generateOTP = async ({ id, email, type}: {id: string, email: string
                 userId: id,
                 otp: hashedOTP,
                 type,
-                expiresAt: new Date(Date.now() + 10 * 60 * 1000)
-            }
-        })
+                expiresAt: new Date(Date.now() + 10 * 60 * 1000),
+            },
+        });
 
         try {
-
-            const { error } = await resend.emails.send({
-                from: "SmartPark <noreply@adixdevs.xyz>",
+            await transporter.sendMail({
+                from: `"SmartPark" <${process.env.AUTH_EMAIL}>`,
                 to: email,
                 subject: subject,
                 html: `
@@ -75,35 +69,22 @@ export const generateOTP = async ({ id, email, type}: {id: string, email: string
                         <p>Your OTP is: <strong style="font-size: 24px; color: #4A90E2;">${otp}</strong></p>
                         <p>This code will expire in <strong>10 minutes</strong>.</p>
                     </div>
-                `
+                `,
             });
-
-            if (error) throw new Error(error.message);
         } catch (err) {
-            // rollback
             console.error(err);
-            await prisma.oTPVerification.delete({
-                where: { id: otpRecord.id }
-            });
+            await prisma.oTPVerification.delete({ where: { id: otpRecord.id } });
             throw new ApiError(500, "Failed to send email");
         }
 
         return {
-            status: "Pending",  
+            status: "Pending",
             message: "OTP sent successfully",
-            data: {
-                userId:id,
-                email
-            }
+            data: { userId: id, email },
         };
-        
-    } catch (error:any) {
+    } catch (error: any) {
         console.error("OTP Generation Error:", error);
-
-        if (error instanceof ApiError) {
-            throw error; // preserve original error
-        }
-
+        if (error instanceof ApiError) throw error;
         throw new ApiError(500, "Failed to send verification code. Please try again.");
     }
-}
+};
